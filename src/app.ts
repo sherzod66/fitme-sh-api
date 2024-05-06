@@ -1,5 +1,4 @@
 import express, { Express } from "express";
-import path from "path";
 import http, { Server } from "http";
 import compression from "compression";
 import helmet from "helmet";
@@ -13,6 +12,7 @@ import AppDatabase from "./database";
 import { notfound, generic } from "./middlewares/error";
 import bootstrap from "./bootstrap";
 import JWTConfig from "./config/jwt";
+import path from "path";
 
 class App {
   private readonly app: Express = express();
@@ -23,13 +23,16 @@ class App {
   public start = async () => {
     try {
       bootstrap();
-
       await this.database.connect();
       await this.applyMiddlewares();
       this.app.use("/api", api);
-      this.app.use("/", (r, s) => {
-        s.send("YOU REACHED FITME.UZ");
-      });
+      this.app.use(
+        "/static",
+        express.static(path.join(path.resolve(), "static"))
+      );
+      // this.app.use("/", (r, s) => {
+      //   s.send("YOU REACHED FITME.UZ");
+      // });
       this.app.use([notfound, generic]);
       this.app.disable("etag");
 
