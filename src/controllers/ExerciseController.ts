@@ -4,6 +4,8 @@ import { StatusCodes } from "http-status-codes";
 import { ExerciseService } from "../services";
 import { ExerciseModel, IExercise } from "../database/models/exercise";
 import { changeResponse } from "./../utils/changeResponse";
+import { removeFileAsync } from "../utils/removeFile";
+import path from "path";
 
 export class ExerciseController {
   public async find(req: Request, res: Response, next: NextFunction) {
@@ -63,6 +65,31 @@ export class ExerciseController {
       res
         .status(StatusCodes.OK)
         .json(changeResponse(true, { ...req.body, _id }));
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async updateImage(req: Request, res: Response, next: NextFunction) {
+    console.log(req.body);
+    try {
+      const { id: _id } = req.params;
+
+      const { image } = req.body;
+
+      const found = await ExerciseModel.findOne({ _id: req.params.id });
+
+      if (!found) {
+        throw createHttpError(StatusCodes.NOT_FOUND, "Exercise not found");
+      }
+      if (found.image.length > 3) {
+        await removeFileAsync(
+          `${path.join(path.resolve(), "static")}${found.image}`
+        );
+      }
+      const updated = await ExerciseModel.updateOne({ _id }, { image });
+      const found2 = await ExerciseModel.findOne({ _id: req.params.id });
+      res.status(StatusCodes.OK).json(changeResponse(true, found2));
     } catch (e) {
       next(e);
     }

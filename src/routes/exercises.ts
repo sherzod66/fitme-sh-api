@@ -4,6 +4,7 @@ import { validate, validateIdParam } from "./../middlewares/validate";
 import {
   exerciseValidationSchema,
   updateExerciseCategoryValidationSchema,
+  updateExerciseImageValidationSchema,
   updateExerciseValidationSchema,
 } from "./../validation/schemas/exercise";
 
@@ -22,6 +23,13 @@ router.put(
   validateIdParam,
   validate(updateExerciseValidationSchema),
   controller.update
+);
+
+router.put(
+  "/image-update/:id",
+  validateIdParam,
+  validate(updateExerciseImageValidationSchema),
+  controller.updateImage
 );
 
 router.put(

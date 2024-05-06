@@ -18,6 +18,10 @@ export const updateExerciseValidationSchema = yup.object({
   metadescription: yup.string().required(),
 });
 
+export const updateExerciseImageValidationSchema = yup.object({
+  image: yup.string().required(),
+});
+
 export const updateExerciseCategoryValidationSchema = yup.object({
   category: yup.string().matches(objectIdRegex).required(),
 });

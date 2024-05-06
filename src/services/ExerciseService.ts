@@ -6,6 +6,7 @@ import { CategoryDocument } from "../database/models/category";
 import { CATEGORY_TYPES } from "../types/common";
 import fs from "fs";
 import path from "path";
+import { removeFileAsync } from "../utils/removeFile";
 
 const populate = ["category"];
 
@@ -18,15 +19,6 @@ const ExerciseService = {
 
   create: async (data: any) => {
     const { title, video, image, description, metadescription } = data;
-
-    const found = await ExerciseService.find({ title });
-
-    if (found) {
-      throw createHttpError(
-        StatusCodes.BAD_REQUEST,
-        `${title} is already created`
-      );
-    }
 
     const category: CategoryDocument = await CategoryService.findOne({
       _id: data.category,
@@ -95,20 +87,11 @@ const ExerciseService = {
     if (!found) {
       throw createHttpError(StatusCodes.NOT_FOUND, "Exercise not found");
     }
-    removeFileAsync(`${path.join(path.resolve(), "static")}${found.image}`);
+    await removeFileAsync(
+      `${path.join(path.resolve(), "static")}${found.image}`
+    );
     await ExerciseModel.findByIdAndDelete(_id);
   },
 };
 
 export default ExerciseService;
-
-const removeFileAsync = async (path: string) => {
-  return new Promise((resolve, reject) =>
-    fs.rm(path, (error) => {
-      if (error) {
-        return reject(error.message);
-      }
-      resolve("");
-    })
-  );
-};

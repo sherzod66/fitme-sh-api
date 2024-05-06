@@ -5,7 +5,7 @@ const exerciseSchema = new Schema<IExercise>(
   {
     title: {
       type: String,
-      unique: true,
+      unique: false,
       required: true,
     },
 
