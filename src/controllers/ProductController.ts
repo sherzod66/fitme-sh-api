@@ -53,7 +53,8 @@ export class ProductController {
       if (!updated.modifiedCount) {
         throw createHttpError(StatusCodes.NOT_FOUND, "Product not found");
       }
-      res.status(StatusCodes.OK).json(changeResponse(true, updated));
+      const findProduct = await ProductModel.findOne({ _id });
+      res.status(StatusCodes.OK).json(changeResponse(true, findProduct));
     } catch (e) {
       next(e);
     }

@@ -15,6 +15,7 @@ import {
   setSchemaNutritionValidationSchema,
   setScheduleWorkoutValidationSchema,
   setWorkoutResultValidationSchema,
+  roleValidationSchema,
 } from "./../validation/schemas/user";
 
 const router = Router();
@@ -117,6 +118,12 @@ router.patch(
   controller.removeMeasurementKey
 );
 
+router.patch(
+  "/update-role/:id",
+  validateIdParam,
+  validate(roleValidationSchema),
+  controller.updateRole
+);
 router.put(
   "/set-measurement-value/:id",
   validateIdParam,

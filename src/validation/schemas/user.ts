@@ -34,6 +34,9 @@ export const addMeasurementKeyValidationSchema = yup.object({
 export const removeMeasurementKeyValidationSchema = yup.object({
   key: yup.string().required(),
 });
+export const roleValidationSchema = yup.object({
+  role: yup.string().required(),
+});
 
 export const setMeasurementValueValidationSchema = yup.object({
   key: yup.string().required(),

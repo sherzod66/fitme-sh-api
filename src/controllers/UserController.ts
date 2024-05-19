@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import createHttpError from "http-errors";
 import { StatusCodes } from "http-status-codes";
-import { IUser } from "./../database/models/user";
+import { IUser, UserModel } from "./../database/models/user";
 import { changeResponse } from "./../utils/changeResponse";
 import { UserService } from "./../services";
 
@@ -284,6 +284,18 @@ export class UserController {
     try {
       const updated = await UserService.setWorkoutResult(req);
 
+      res.status(StatusCodes.OK).json(changeResponse(true, updated));
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async updateRole(req: Request, res: Response, next: NextFunction) {
+    const { role } = req.body;
+    try {
+      const updated = await UserModel.findByIdAndUpdate(req.params.id, {
+        role,
+      });
       res.status(StatusCodes.OK).json(changeResponse(true, updated));
     } catch (e) {
       next(e);
