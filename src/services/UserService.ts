@@ -57,7 +57,6 @@ const populate = [
     path: "dishes",
     populate: [
       { path: "products", populate: "category" },
-      "category",
       "creatorUser",
       "creatorTrainer",
     ],

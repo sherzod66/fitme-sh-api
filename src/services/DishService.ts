@@ -8,20 +8,13 @@ import { TrainerModel } from "./../database/models/trainer";
 
 const populate = [
   { path: "products", populate: "category" },
-  "category",
   "creatorUser",
   "creatorTrainer",
 ];
 
 const DishService = {
   findAll: async (req: Request) => {
-    let query: any = {};
-
-    if (req.query.category) {
-      query.category = req.query.category;
-    }
-
-    return await DishModel.find(query).populate(populate);
+    return await DishModel.find().populate(populate);
   },
 
   find: async (condition: Partial<IDish>): Promise<any | null | undefined> => {
