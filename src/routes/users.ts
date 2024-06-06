@@ -57,6 +57,22 @@ router.put(
   controller.addWorkoutPlan
 );
 
+//-----------------
+router.put(
+  "/add-nutrition-plan/:id",
+  validateIdParam,
+  controller.addNutritionPlan
+);
+
+router.put(
+  "/remove-nutrition-plan/:id",
+  validateIdParam,
+  validate(changeWorkoutPlansValidationSchema),
+  controller.removeNutritionPlan
+);
+
+//-----------------
+
 router.patch(
   "/remove-workout-plan/:id",
   validateIdParam,

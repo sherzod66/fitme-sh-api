@@ -101,6 +101,36 @@ export class UserController {
       next(e);
     }
   }
+  //
+  public async addNutritionPlan(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const updated = await UserService.addNutritionPlan(req);
+
+      res.status(StatusCodes.OK).json(changeResponse(true, updated));
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async removeNutritionPlan(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const updated = await UserService.removeNutritionPlan(req);
+
+      res.status(StatusCodes.OK).json(changeResponse(true, updated));
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  //
 
   public async removeWorkoutPlan(
     req: Request,

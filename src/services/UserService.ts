@@ -14,6 +14,7 @@ import { ExerciseModel } from "../database/models/exercise";
 import { WorkoutPlanModel } from "../database/models/workout";
 import { ProductModel } from "../database/models/product";
 import { DishModel } from "../database/models/dish";
+import { NutritionPlanModel } from "../database/models/nutrition";
 
 const populate = [
   "myTrainers",
@@ -136,6 +137,69 @@ const UserService = {
     return saved;
   },
 
+  //
+  addNutritionPlan: async (req: Request) => {
+    // @ts-ignore
+    let foundUser: IUser = req.user;
+
+    if (req.params.id !== foundUser._id.toString()) {
+      foundUser = await UserService.find({ _id: req.params.id });
+    }
+
+    if (!foundUser) {
+      throw createHttpError(StatusCodes.NOT_FOUND, "User not found");
+    }
+
+    if (foundUser.nutritionPlans?.length) {
+      foundUser.nutritionPlans.map((plan) => {
+        if (plan._id.toString() === req.body.planId) {
+          throw createHttpError(StatusCodes.BAD_REQUEST, "Plan already added");
+        }
+      });
+    }
+
+    const foundPlan = await NutritionPlanModel.findById(req.body.planId);
+
+    if (!foundPlan) {
+      throw createHttpError(StatusCodes.NOT_FOUND, "Plan not found");
+    }
+
+    foundUser.nutritionPlans = [...(foundUser.nutritionPlans ?? []), foundPlan];
+    await UserModel.findByIdAndUpdate(req.params.id, foundUser);
+
+    return foundUser;
+  },
+
+  removeNutritionPlan: async (req: Request) => {
+    // @ts-ignore
+    let foundUser: IUser = req.user;
+
+    if (req.params.id !== foundUser._id.toString()) {
+      foundUser = await UserService.find({ _id: req.params.id });
+    }
+
+    if (!foundUser) {
+      throw createHttpError(StatusCodes.NOT_FOUND, "User not found");
+    }
+
+    const findIndex = [...(foundUser.nutritionPlans ?? [])].findIndex(
+      (a) => a._id.toString() === req.body.planId
+    );
+
+    if (!findIndex || findIndex === -1) {
+      throw createHttpError(StatusCodes.NOT_FOUND, "Invalid planId");
+    }
+
+    let arr = [...foundUser.nutritionPlans];
+    arr = [...arr.slice(0, findIndex), ...arr.slice(findIndex + 1)];
+    foundUser.nutritionPlans = [...arr];
+
+    await UserModel.findByIdAndUpdate(req.params.id, foundUser);
+
+    return foundUser;
+  },
+
+  //
   find: async (condition: Partial<IUser>): Promise<any | null | undefined> => {
     return await UserModel.findOne(condition).populate(populate);
   },
@@ -249,8 +313,7 @@ const UserService = {
     const findIndex = [...(foundUser.workoutPlans ?? [])].findIndex(
       (a) => a._id.toString() === req.body.planId
     );
-
-    if (!findIndex || findIndex === -1) {
+    if (findIndex === -1) {
       throw createHttpError(StatusCodes.NOT_FOUND, "Invalid planId");
     }
 

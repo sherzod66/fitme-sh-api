@@ -3,10 +3,8 @@ import createHttpError from "http-errors";
 import { StatusCodes } from "http-status-codes";
 import { IDish, DishModel } from "./../database/models/dish";
 import { ProductModel } from "./../database/models/product";
-import { CategoryModel } from "./../database/models/category";
 import { UserModel } from "./../database/models/user";
 import { TrainerModel } from "./../database/models/trainer";
-import { CATEGORY_TYPES } from "../types/common";
 
 const populate = [
   { path: "products", populate: "category" },
@@ -31,13 +29,7 @@ const DishService = {
   },
 
   create: async (obj: any): Promise<any | null | undefined> => {
-    const {
-      name,
-      products,
-      amounts,
-      category: categoryId,
-      creator: creatorId,
-    } = obj;
+    const { name, products, amounts, creator: creatorId } = obj;
 
     const foundDish = await ProductModel.findOne({ name });
 
@@ -63,16 +55,6 @@ const DishService = {
       }
     }
 
-    const foundCategory = await CategoryModel.findById(categoryId);
-
-    if (!foundCategory) {
-      throw createHttpError(StatusCodes.NOT_FOUND, "Category not found");
-    }
-
-    if (foundCategory.type !== CATEGORY_TYPES.DISH) {
-      throw createHttpError(StatusCodes.BAD_REQUEST, "Invalid category");
-    }
-
     const foundUser = await UserModel.findById(creatorId);
     const foundTrainer = await TrainerModel.findById(creatorId);
 
@@ -93,7 +75,6 @@ const DishService = {
       name,
       products,
       amounts,
-      category: foundCategory,
       ...creator,
     });
 

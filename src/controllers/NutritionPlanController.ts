@@ -21,7 +21,7 @@ export class NutritionPlanController {
       let isSuperAdmin = req.user?.role === "SUPERADMIN";
       let bod = req.body;
       if (isSuperAdmin) {
-        bod = { ...req.body, isPublic: true };
+        bod = { ...req.body };
       }
       const created = await NutritionPlanService.create(bod);
       res.status(StatusCodes.OK).json(changeResponse(true, created));

@@ -6,7 +6,7 @@ const dishSchema = new Schema<IDish>(
     name: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
     },
 
     products: {
@@ -17,11 +17,6 @@ const dishSchema = new Schema<IDish>(
     amounts: {
       type: [Number],
       required: true,
-    },
-
-    category: {
-      type: SchemaTypes.ObjectId,
-      ref: "Category",
     },
 
     creatorTrainer: {
