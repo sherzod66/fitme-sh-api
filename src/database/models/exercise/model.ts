@@ -4,9 +4,18 @@ import { IExercise } from "./types";
 const exerciseSchema = new Schema<IExercise>(
   {
     title: {
-      type: String,
-      unique: false,
-      required: true,
+      en: {
+        type: String,
+        required: false,
+      },
+      ru: {
+        type: String,
+        required: true,
+      },
+      uz: {
+        type: String,
+        required: false,
+      },
     },
 
     image: {
@@ -20,8 +29,18 @@ const exerciseSchema = new Schema<IExercise>(
     },
 
     description: {
-      type: String,
-      required: true,
+      en: {
+        type: String,
+        required: true,
+      },
+      ru: {
+        type: String,
+        required: true,
+      },
+      uz: {
+        type: String,
+        required: true,
+      },
     },
 
     metadescription: {

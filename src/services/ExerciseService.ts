@@ -19,7 +19,7 @@ const ExerciseService = {
 
   create: async (data: any) => {
     const { title, video, image, description, metadescription } = data;
-
+    console.log(data);
     const category: CategoryDocument = await CategoryService.findOne({
       _id: data.category,
     });

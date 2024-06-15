@@ -221,7 +221,6 @@ export class TrainerController {
       }
 
       const user: UserDocument = await UserService.find({ _id: discipleId });
-
       foundTrainer.requestedDisciples = foundTrainer.requestedDisciples.filter(
         (a) => a._id.toString() !== discipleId
       );
