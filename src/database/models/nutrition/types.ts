@@ -19,6 +19,7 @@ export interface INutritionPlan {
   creatorUser?: UserDocument;
   creatorTrainer?: TrainerDocument;
   nutritions: INutrition[][];
+  users: ObjectId[];
 }
 
 export interface INutrition {

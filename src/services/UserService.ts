@@ -165,6 +165,9 @@ const UserService = {
 
     foundUser.nutritionPlans = [...(foundUser.nutritionPlans ?? []), foundPlan];
     await UserModel.findByIdAndUpdate(req.params.id, foundUser);
+    await NutritionPlanModel.findByIdAndUpdate(req.body.planId, {
+      $push: { users: foundUser._id },
+    });
 
     return foundUser;
   },
@@ -293,6 +296,9 @@ const UserService = {
 
     foundUser.workoutPlans = [...(foundUser.workoutPlans ?? []), foundPlan];
     await UserModel.findByIdAndUpdate(req.params.id, foundUser);
+    await WorkoutPlanModel.findByIdAndUpdate(req.body.planId, {
+      $push: { users: foundUser._id },
+    });
 
     return foundUser;
   },

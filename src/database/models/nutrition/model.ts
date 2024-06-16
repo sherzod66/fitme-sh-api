@@ -59,6 +59,11 @@ const nutritionPlanSchema = new Schema<INutritionPlan>(
       required: false,
     },
 
+    users: {
+      type: [SchemaTypes.ObjectId],
+      ref: "User",
+    },
+
     nutritions: {
       type: [
         [

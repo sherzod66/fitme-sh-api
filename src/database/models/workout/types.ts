@@ -15,6 +15,7 @@ export interface IWorkoutPlan {
   week: number;
   creatorTrainer?: TrainerDocument;
   creatorUser?: UserDocument;
+  users: ObjectId[];
   workouts: IWorkout[][];
 }
 

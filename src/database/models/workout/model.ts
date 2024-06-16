@@ -50,6 +50,10 @@ const workoutPlanSchema = new Schema<IWorkoutPlan>(
       ref: "User",
       required: false,
     },
+    users: {
+      type: [SchemaTypes.ObjectId],
+      ref: "User",
+    },
 
     workouts: {
       type: [
