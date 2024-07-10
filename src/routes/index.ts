@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import auth from "./auth";
+import feedback from "./feedback";
 import users from "./users";
 import trainers from "./trainers";
 import fitness from "./fitnessClub";
@@ -18,6 +19,7 @@ import authenticate from "../middlewares/authenticate";
 const router = Router();
 
 router.use("/auth", auth);
+router.use("/feedback", feedback);
 router.use("/users", authenticate, users);
 router.use("/trainers", trainers);
 router.use("/fitness-club", fitness);

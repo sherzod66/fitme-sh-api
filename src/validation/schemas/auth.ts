@@ -21,3 +21,9 @@ export const refreshTokenValidationSchema = yup.object({
 export const logOutValidationSchema = yup.object({
   phone: yup.string().required(),
 });
+
+export const feedbackValidationSchema = yup.object({
+  fullName: yup.string().required(),
+  email: yup.string().required(),
+  userName: yup.string().required(),
+});
