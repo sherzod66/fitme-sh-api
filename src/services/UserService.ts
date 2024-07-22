@@ -799,8 +799,6 @@ const UserService = {
     );
 
     if (!!existingPlan) {
-      console.log("EXISTING PLAN", JSON.stringify(existingPlan, null, 4), plan);
-
       foundUser.scheduleWorkouts = foundUser.scheduleWorkouts.map((e) => {
         if (e.plan.title === plan.title) {
           e.current = true;
@@ -812,6 +810,11 @@ const UserService = {
         }
         return e;
       });
+      const copyData = [...foundUser.scheduleWorkouts];
+      console.log("my code work");
+      foundUser.scheduleWorkouts = [
+        ...copyData.filter((elem) => elem.current === true),
+      ];
       await UserModel.findByIdAndUpdate(req.params.id, foundUser);
       return foundUser;
     }
@@ -863,6 +866,11 @@ const UserService = {
         results,
         current: true,
       },
+    ];
+    const copyData = [...foundUser.scheduleWorkouts];
+    console.log("my code work");
+    foundUser.scheduleWorkouts = [
+      ...copyData.filter((elem) => elem.current === true),
     ];
 
     await UserModel.findByIdAndUpdate(req.params.id, foundUser);
