@@ -38,36 +38,8 @@ const ProductService = {
       carb,
       category: categoryId,
       creator: creatorId,
+      userProduct,
     } = data;
-
-    const foundProduct = await ProductModel.findOne({
-      $or: [
-        { "name.en": name.en },
-        { "name.ru": name.ru },
-        { "name.uz": name.uz },
-      ],
-    });
-
-    if (foundProduct) {
-      let duplicateName = "";
-
-      if (foundProduct.name.en === name.en) {
-        duplicateName = name.en;
-      }
-
-      if (foundProduct.name.ru === name.ru) {
-        duplicateName = name.ru;
-      }
-
-      if (foundProduct.name.uz === name.uz) {
-        duplicateName = name.uz;
-      }
-
-      throw createHttpError(
-        StatusCodes.BAD_REQUEST,
-        `Product with "${duplicateName}" already created`
-      );
-    }
 
     const foundCategory = await CategoryModel.findById(categoryId);
 
@@ -103,9 +75,15 @@ const ProductService = {
       carb,
       category: foundCategory,
       ...creator,
+      userProduct,
+      isAdmin: foundUser
+        ? foundUser.role === "SUPERADMIN"
+          ? true
+          : false
+        : false,
     });
 
-    if (foundUser) {
+    if (foundUser && userProduct) {
       foundUser.products = [...(foundUser.products ?? []), created];
       await foundUser.save();
     }

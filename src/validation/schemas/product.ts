@@ -16,6 +16,7 @@ export const createProductValidationSchema = yup.object({
   carb: yup.number().required(),
   category: yup.string().matches(objectIdRegex).required(),
   creator: yup.string().matches(objectIdRegex).required(),
+  userProduct: yup.boolean().required(),
 });
 
 export const updateProductValidationSchema = yup.object({

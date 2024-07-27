@@ -14,6 +14,8 @@ export interface IProduct {
   category: CategoryDocument;
   creatorTrainer?: TrainerDocument;
   creatorUser?: UserDocument;
+  isAdmin: boolean;
+  userProduct: boolean;
 }
 
 export type ProductDocument = Document & IProduct;

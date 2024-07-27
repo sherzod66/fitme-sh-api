@@ -7,17 +7,17 @@ const productSchema = new Schema<IProduct>(
       en: {
         type: String,
         required: true,
-        unique: true,
+        unique: false,
       },
       ru: {
         type: String,
         required: true,
-        unique: true,
+        unique: false,
       },
       uz: {
         type: String,
         required: true,
-        unique: true,
+        unique: false,
       },
     },
 
@@ -46,6 +46,14 @@ const productSchema = new Schema<IProduct>(
       ref: "Category",
     },
 
+    isAdmin: {
+      type: Boolean,
+      required: true,
+    },
+    userProduct: {
+      type: Boolean,
+      required: true,
+    },
     creatorTrainer: {
       type: SchemaTypes.ObjectId,
       ref: "Trainer",
