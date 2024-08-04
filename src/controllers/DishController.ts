@@ -41,9 +41,9 @@ export class DishController {
 
   public async update(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log("DishController update");
+      const update = await DishService.update(req.body, req.params.id);
 
-      res.status(StatusCodes.OK).json(changeResponse(true, null));
+      res.status(StatusCodes.OK).json(changeResponse(true, update));
     } catch (e) {
       next(e);
     }
